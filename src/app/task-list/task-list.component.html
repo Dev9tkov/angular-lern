@@ -1,4 +1,10 @@
-<app-statistic></app-statistic>
+<app-statistic
+  [taskAll]="getTaskListSize()"
+  [tasksFinished]="getTasksAmountByStatus('Выполнено')"
+  [tasksOverdue]="getTasksAmountByStatus('Просрочено')"
+  [tasksPlanned]="getTasksAmountByStatus('Запланировано')"
+>
+</app-statistic>
 <table class="table">
   <thead>
   <tr>
@@ -43,9 +49,15 @@
     <td>12.01.2021</td>
     <td><input type = "checkbox"/></td>
   </tr>
-  <tr app-list-row>
+  <tr app-list-row
+      [name]="'Название 10'"
+      [category]="'Категория 10'"
+      [dateStart]="'20:15 08-10-2019'"
+      [dateEnd]="'20:15 08-10-2019'"
+      [status]="'Выполнено'"
+      (deleteTaskEmitter)="deleteTaskFromArray($event)"
+  >
   </tr>
-
   </tbody>
 </table>
 <div>
