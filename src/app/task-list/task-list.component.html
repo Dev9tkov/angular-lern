@@ -1,3 +1,4 @@
+<app-statistic></app-statistic>
 <table class="table">
   <thead>
   <tr>
@@ -42,9 +43,17 @@
     <td>12.01.2021</td>
     <td><input type = "checkbox"/></td>
   </tr>
-  <tr>
-    <app-list-row></app-list-row>
+  <tr app-list-row>
   </tr>
+
   </tbody>
 </table>
-<button class="btn btn-success" (click)="addTask()">Добавить задачу</button>
+<div>
+  <button class="btn btn-success" (click)="addTask()">Добавить задачу</button>
+</div>
+<div>
+  <label> Показать заверщенные задачи
+  <input type = "checkbox" (change)="filterTasks($event)"/>
+  </label>
+</div>
+

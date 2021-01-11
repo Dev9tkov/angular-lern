@@ -11,6 +11,10 @@ export class TaskListComponent implements OnInit {
     console.log('Задача создана');
   }
 
+  filterTasks(event: any): void {
+    console.log(event.target.checked);
+  }
+
   constructor() { }
 
   ngOnInit(): void {
