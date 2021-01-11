@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskListComponent implements OnInit {
 
+  addTask(): void {
+    console.log('Задача создана');
+  }
+
   constructor() { }
 
   ngOnInit(): void {
