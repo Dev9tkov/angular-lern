@@ -15,6 +15,8 @@ export class TaskListComponent implements OnInit {
     {name: 'Сдать экзамен по Java', category: 'обучение', dateStart: '20:15 08-10-2019', dateEnd: '20:18 10-10-2019', status: 'Просрочено'}
   ];
 
+  checked: boolean;
+
   getTaskListSize(): number {
     return this.tasks.length;
   }
@@ -32,7 +34,8 @@ export class TaskListComponent implements OnInit {
   }
 
   filterTasks(event: any): void {
-    console.log(event.target.checked);
+    this.checked = event.target.checked;
+    console.log(this.checked);
   }
 
   constructor() { }
@@ -40,4 +43,9 @@ export class TaskListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  deleteTask(index: number): void {
+    if (index > -1) {
+      this.tasks.splice(index, 1);
+    }
+  }
 }

@@ -5,50 +5,41 @@
   [tasksPlanned]="getTasksAmountByStatus('Запланировано')"
 >
 </app-statistic>
+<div>
+  <label> Показать завершенные задачи
+    <input type = "checkbox" (change)="filterTasks($event)"/>
+  </label>
+</div>
 <table class="table">
   <thead>
   <tr>
-    <th scope="col">#</th>
+    <th scope="col">ID</th>
     <th scope="col">Название задачи</th>
     <th scope="col">Категория</th>
     <th scope="col">Дата начала</th>
     <th scope="col">Дата окончания</th>
     <th scope="col">Статус</th>
+    <th scope="col">Удаление задачи</th>
   </tr>
   </thead>
   <tbody>
-  <tr>
-    <th scope="row">1</th>
-    <td>Залить бензин полный бак</td>
-    <td>Машина</td>
-    <td>11.01.2021</td>
-    <td>11.01.2021</td>
-    <td><input type = "checkbox"/></td>
-  </tr>
-  <tr>
-    <th scope="row">2</th>
-    <td>Передать отчеты начальнику управления</td>
-    <td>Работа</td>
-    <td>11.01.2021</td>
-    <td>12.01.2021</td>
-    <td><input type = "checkbox"/></td>
-  </tr>
-  <tr>
-    <th scope="row">3</th>
-    <td>Убраться у себя в комнате</td>
-    <td>Личное</td>
-    <td>12.01.2021</td>
-    <td>12.01.2021</td>
-    <td><input type = "checkbox"/></td>
-  </tr>
-  <tr>
-    <th scope="row">4</th>
-    <td>Приготовить ужин</td>
-    <td>Дом</td>
-    <td>12.01.2021</td>
-    <td>12.01.2021</td>
-    <td><input type = "checkbox"/></td>
-  </tr>
+<tr *ngFor="let task of tasks; let i = index"
+>
+  <th *ngIf="checked || (!checked && task.status != 'Выполнено')">{{i + 1}}</th>
+  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.name}}</td>
+  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.category}}</td>
+  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.dateStart}}</td>
+  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.dateEnd}}</td>
+  <td
+    [ngStyle]="{'color': task.status == 'Просрочено' ? 'red' : 'black'}"
+    *ngIf="checked || (!checked && task.status != 'Выполнено')"
+  >
+    {{task.status}}</td>
+
+  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">
+    <button class="btn btn-danger" (click)="deleteTask(i)">Удалить задачу</button>
+  </td>
+</tr>
   <tr app-list-row
       [name]="'Название 10'"
       [category]="'Категория 10'"
@@ -62,10 +53,5 @@
 </table>
 <div>
   <button class="btn btn-success" (click)="addTask()">Добавить задачу</button>
-</div>
-<div>
-  <label> Показать заверщенные задачи
-  <input type = "checkbox" (change)="filterTasks($event)"/>
-  </label>
 </div>
 
