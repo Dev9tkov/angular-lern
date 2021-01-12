@@ -10,6 +10,10 @@
     <input type = "checkbox" (change)="filterTasks($event)"/>
   </label>
 </div>
+<app-task-add
+  (addTaskEmitter)="addTaskToArray($event)"
+>
+</app-task-add>
 <table class="table">
   <thead>
   <tr>
@@ -51,7 +55,4 @@
   </tr>
   </tbody>
 </table>
-<div>
-  <button class="btn btn-success" (click)="addTask()">Добавить задачу</button>
-</div>
 
