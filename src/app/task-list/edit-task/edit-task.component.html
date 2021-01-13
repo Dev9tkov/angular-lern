@@ -1,0 +1,24 @@
+<form>
+  <div class="col-xs-3">
+    <label>Название</label>
+    <input type="text" class="form-control" name="name" [(ngModel)]="editTask.name"/>
+  </div>
+  <div class="col-xs-3">
+    <label>Категория</label>
+    <input type="text" class="form-control" name="category" [(ngModel)]="editTask.category">
+  </div>
+  <div class="col-xs-3">
+    <label>Дата начала</label>
+    <input type="text" class="form-control" name="dateStart" [(ngModel)]="editTask.dateStart">
+  </div>
+  <div class="col-xs-3">
+    <label>Дата окончания</label>
+    <input type="text" class="form-control" name="dateEnd" [(ngModel)]="editTask.dateEnd">
+  </div>
+  <div class="col-xs-3">
+    <label>Статус</label>
+    <input type="text" class="form-control" name="status" [(ngModel)]="editTask.status">
+  </div>
+  <button class="btn btn-success" (click)="saveTask(editTask)">Сохранить</button>
+  <button class="btn btn-secondary" (click)="cancelSaveTask()">Отменить</button>
+</form>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Task} from './task.model';
 
 @Component({
@@ -7,25 +7,19 @@ import {Task} from './task.model';
   styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit {
+  selectedIndex: number;
+  selectedTask: Task;
   tasks: Task[] = [
     new Task('Футбол с сотрудниками', 'досуг', '20:15 08-10-2019', '20:18 10-10-2019', 'Запланировано'),
     new Task('Сравнить новый айпад с самсунгом', 'досуг', '20:15 08-10-2019', '20:18 10-10-2019', 'Выполнено'),
     new Task('Сдать анализы', 'работа', '20:15 08-10-2019', '20:18 10-10-2019', 'Просрочено'),
     new Task('Попросить аванс на работе', 'досуг', '20:15 08-10-2019', '20:18 10-10-2019', 'Запланировано'),
-    new Task('Положить 100 000 р в банк', 'финансы', '20:15 08-10-2019', '20:18 10-10-2019', 'Выполнено'),
+    new Task('Положить 100 000 в банк', 'финансы', '20:15 08-10-2019', '20:18 10-10-2019', 'Выполнено'),
     new Task('Сдать экзамен по Java', 'обучение', '20:15 08-10-2019', '20:18 10-10-2019', 'Просрочено')
   ];
-
-  // tasks = [
-  //   {name: 'Футбол с сотрудниками', category: 'досуг', dateStart: '20:15 08-10-2019', dateEnd: '20:18 10-10-2019', status: 'Запланировано'},
-  //   {name: 'Сравнить новый айпад с самсунгом', category: 'досуг', dateStart: '20:15 08-10-2019', dateEnd: '20:18 10-10-2019', status: 'Выполнено'},
-  //   {name: 'Сдать анализы', category: 'здоровье', dateStart: '20:15 08-10-2019', dateEnd: '20:18 10-10-2019', status: 'Просрочено'},
-  //   {name: 'Попросить аванс на работе', category: 'работа', dateStart: '20:15 08-10-2019', dateEnd: '20:18 10-10-2019', status: 'Запланировано'},
-  //   {name: 'Положить 100 000 р в банк', category: 'финансы', dateStart: '20:15 08-10-2019', dateEnd: '20:18 10-10-2019', status: 'Выполнено'},
-  //   {name: 'Сдать экзамен по Java', category: 'обучение', dateStart: '20:15 08-10-2019', dateEnd: '20:18 10-10-2019', status: 'Просрочено'}
-  // ];
-
   checked: boolean;
+  addCommand: boolean;
+  editCommand: boolean;
 
   getTaskListSize(): number {
     return this.tasks.length;
@@ -44,11 +38,6 @@ export class TaskListComponent implements OnInit {
     console.log(this.checked);
   }
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
   deleteTask(index: number): void {
     if (index > -1) {
       this.tasks.splice(index, 1);
@@ -56,5 +45,27 @@ export class TaskListComponent implements OnInit {
   }
   addTaskToArray(task: Task): void {
     this.tasks.push(task);
+  }
+
+  editTaskInArray(task: Task): void {
+    this.tasks[this.selectedIndex] = task;
+    this.editCommand = false;
+    this.addCommand = true;
+  }
+
+  editTask(task: Task, idx: number): void {
+    this.addCommand = false;
+    this.editCommand = true;
+    this.selectedIndex = idx;
+    this.selectedTask = {...task}; // клонированный task
+  }
+
+  ngOnInit(): void {
+    this.addCommand = true;
+  }
+
+  cancelEditTaskEmitter(cancel: boolean): void {
+    this.editCommand = cancel; // false при нажатии кнопки отменить в edit-task component
+    this.addCommand = true;
   }
 }

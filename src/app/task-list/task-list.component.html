@@ -10,10 +10,21 @@
     <input type = "checkbox" (change)="filterTasks($event)"/>
   </label>
 </div>
+
 <app-task-add
+  *ngIf="addCommand"
   (addTaskEmitter)="addTaskToArray($event)"
 >
 </app-task-add>
+
+<app-edit-task
+  *ngIf="editCommand"
+  [editTask]="selectedTask"
+  (editTaskEmitter)="editTaskInArray($event)"
+  (cancelEditTaskEmitter)="cancelEditTaskEmitter($event)"
+>
+</app-edit-task>
+
 <table class="table">
   <thead>
   <tr>
@@ -23,7 +34,7 @@
     <th scope="col">Дата начала</th>
     <th scope="col">Дата окончания</th>
     <th scope="col">Статус</th>
-    <th scope="col">Удаление задачи</th>
+    <th scope="col">Редактирование/Удаление задачи</th>
   </tr>
   </thead>
   <tbody>
@@ -39,8 +50,8 @@
     *ngIf="checked || (!checked && task.status != 'Выполнено')"
   >
     {{task.status}}</td>
-
   <td *ngIf="checked || (!checked && task.status != 'Выполнено')">
+    <button class="btn btn-success" (click)="editTask(task, i)">Редактировать задачу</button>
     <button class="btn btn-danger" (click)="deleteTask(i)">Удалить задачу</button>
   </td>
 </tr>

@@ -14,6 +14,7 @@ export class TaskAddComponent implements OnInit {
   dateEnd: string;
   status: string;
   task: Task;
+  @Input() showAddTask: boolean;
   @Output() addTaskEmitter = new EventEmitter<Task>();
 
   constructor() { }
