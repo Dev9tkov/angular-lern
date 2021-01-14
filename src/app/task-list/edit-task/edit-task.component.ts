@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Task} from '../task.model';
 
 @Component({
@@ -6,7 +6,7 @@ import {Task} from '../task.model';
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.css']
 })
-export class EditTaskComponent implements OnInit {
+export class EditTaskComponent implements OnInit, OnDestroy, OnChanges {
   @Input() editTask: Task;
   @Output() editTaskEmitter = new EventEmitter<Task>();
   @Output() cancelEditTaskEmitter = new EventEmitter<boolean>();
@@ -14,6 +14,20 @@ export class EditTaskComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('ngOnDestroy');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.editTask.status === 'Выполнено') {
+      alert('Нельзя редактировать задачу');
+      setTimeout(() =>  {
+        this.cancelEditTaskEmitter.emit(false);
+        }, 100);
+    }
+  }
+
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
   }
 
   saveTask(editTask: Task): void {

@@ -17,7 +17,18 @@
   </div>
   <div class="col-xs-3">
     <label>Статус</label>
-    <input type="text" class="form-control" name="status" [(ngModel)]="editTask.status">
+    <div>
+      <select class="form-select" aria-label="Default select example" name="select" [(ngModel)]="editTask.status">
+        <option value="Выполнено">Выполнено</option>
+        <option value="Выполняется">Выполняется</option>
+        <option value="Просрочено">Просрочено</option>
+        <option value="Запланировано">Запланировано</option>
+      </select>
+    </div>
+<!--    <input type="text" class="form-control" name="status" [(ngModel)]="editTask.status">-->
+  </div>
+  <div>
+
   </div>
   <button class="btn btn-success" (click)="saveTask(editTask)">Сохранить</button>
   <button class="btn btn-secondary" (click)="cancelSaveTask()">Отменить</button>
