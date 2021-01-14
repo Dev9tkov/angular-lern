@@ -16,13 +16,12 @@ export class ListRowComponent implements OnInit {
   @Input() status;
 
   @Output() deleteTaskEmitter = new EventEmitter<string>();
-  helperService = new HelperService();
 
   deleteTask(): void {
     this.deleteTaskEmitter.emit(this.name);
   }
 
-  constructor() { }
+  constructor(private helperService: HelperService) { }
 
   ngOnInit(): void {
   }
