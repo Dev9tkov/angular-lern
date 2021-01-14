@@ -11,6 +11,7 @@ import {FormsModule} from '@angular/forms';
 import { EditTaskComponent } from './task-list/edit-task/edit-task.component';
 import { LogDirective } from './shared/directives/log.directive';
 import { ColorDirective } from './shared/directives/color.directive';
+import { MyTitleCasePipe } from './shared/pipes/my-title-case.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ColorDirective } from './shared/directives/color.directive';
     TaskAddComponent,
     EditTaskComponent,
     LogDirective,
-    ColorDirective
+    ColorDirective,
+    MyTitleCasePipe
   ],
   imports: [
     BrowserModule,

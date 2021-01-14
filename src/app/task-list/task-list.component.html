@@ -41,7 +41,7 @@
 <tr *ngFor="let task of tasks; let i = index"
 >
   <th *ngIf="checked || (!checked && task.status != 'Выполнено')">{{i + 1}}</th>
-  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.name}}</td>
+  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.name | myTitleCase}}</td>
   <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.category}}</td>
   <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.dateStart}}</td>
   <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.dateEnd}}</td>
