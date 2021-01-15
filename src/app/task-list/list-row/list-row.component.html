@@ -6,6 +6,7 @@
 <td>{{dateEnd}}</td>
 <td>{{status}}</td>
 <td>
+  <button class="btn btn-success" (click)="editTask(name, category, dateStart, dateEnd, status)">Редактировать задачу</button>
   <button class="btn btn-danger" (click)="deleteTask()">Удалить задачу</button>
 </td>
 

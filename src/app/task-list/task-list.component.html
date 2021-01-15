@@ -18,8 +18,6 @@
 </app-task-add>
 
 <app-edit-task
-  *ngIf="editCommand"
-  [editTask]="selectedTask"
   (editTaskEmitter)="editTaskInArray($event)"
   (cancelEditTaskEmitter)="cancelEditTaskEmitter($event)"
 >

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Task} from './task.model';
+import {TaskService} from '../shared/services/task.service';
 
 @Component({
   selector: 'app-task-list',
@@ -9,6 +10,7 @@ import {Task} from './task.model';
 export class TaskListComponent implements OnInit {
   selectedIndex: number;
   selectedTask: Task;
+  taskFromObservable: Task;
   tasks: Task[] = [
     new Task('Футбол с сотрудниками', 'досуг', '20:15 08-10-2019', '20:18 10-10-2019', 'Запланировано'),
     new Task('Сравнить новый айпад с самсунгом', 'досуг', '20:15 08-10-2019', '20:18 10-10-2019', 'Выполнено'),
@@ -20,6 +22,8 @@ export class TaskListComponent implements OnInit {
   checked: boolean;
   addCommand: boolean;
   editCommand: boolean;
+  constructor(private taskService: TaskService) {
+  }
 
   getTaskListSize(): number {
     return this.tasks.length;
@@ -62,6 +66,11 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.addCommand = true;
+    this.taskService.dataUpdate$.subscribe((task: Task) => {
+      this.taskFromObservable = task;
+      this.addCommand = false;
+      this.editCommand = true;
+      });
   }
 
   cancelEditTaskEmitter(cancel: boolean): void {

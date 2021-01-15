@@ -1,6 +1,8 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import {HelperService} from '../../shared/services/helper.service';
+import {TaskService} from '../../shared/services/task.service';
+import {Task} from '../task.model';
 
 @Component({
   selector: '[app-list-row]',
@@ -8,7 +10,6 @@ import {HelperService} from '../../shared/services/helper.service';
   styleUrls: ['./list-row.component.css']
 })
 export class ListRowComponent implements OnInit {
-
   @Input() name;
   @Input() category;
   @Input() dateStart;
@@ -21,9 +22,14 @@ export class ListRowComponent implements OnInit {
     this.deleteTaskEmitter.emit(this.name);
   }
 
-  constructor(private helperService: HelperService) { }
+    constructor(public helperService: HelperService,
+                public taskService: TaskService) { }
 
   ngOnInit(): void {
   }
 
+  editTask(name: string, category: string, dateStart: string, dateEnd: string, status: string): void {
+    const taskFromForm = new Task(name, category, dateStart, dateEnd, status);
+    this.taskService.updateDate(taskFromForm);
+  }
 }

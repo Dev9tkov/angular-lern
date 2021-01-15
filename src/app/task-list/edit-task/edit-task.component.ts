@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Task} from '../task.model';
+import {TaskService} from '../../shared/services/task.service';
 
 @Component({
   selector: 'app-edit-task',
@@ -8,13 +9,19 @@ import {Task} from '../task.model';
 })
 export class EditTaskComponent implements OnInit, OnDestroy, OnChanges {
   @Input() editTask: Task;
+  taskFromObservable: Task;
+  haveTask = false;
   @Output() editTaskEmitter = new EventEmitter<Task>();
   @Output() cancelEditTaskEmitter = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {
-    console.log('ngOnDestroy');
+    this.taskService.dataUpdate$.subscribe((task: Task) => {
+      this.taskFromObservable = task;
+      this.haveTask = true;
+      console.log(this.taskFromObservable);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -36,6 +43,7 @@ export class EditTaskComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   cancelSaveTask(): void {
+    this.haveTask = false;
     this.cancelEditTaskEmitter.emit(false);
   }
 }

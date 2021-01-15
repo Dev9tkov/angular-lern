@@ -1,24 +1,26 @@
-<form>
+<!--<p>{{taskFromObservable | json}}</p>-->
+<form *ngIf="haveTask">
   <div class="col-xs-3">
     <label>Название</label>
-    <input type="text" class="form-control" name="name" [(ngModel)]="editTask.name"/>
+<!--    <input type="text" class="form-control" name="name" [(ngModel)]="editTask.name"/>-->
+    <input type="text" class="form-control" name="name" [(ngModel)]="taskFromObservable.name"/>
   </div>
   <div class="col-xs-3">
     <label>Категория</label>
-    <input type="text" class="form-control" name="category" [(ngModel)]="editTask.category">
+    <input type="text" class="form-control" name="category" [(ngModel)]="taskFromObservable.category">
   </div>
   <div class="col-xs-3">
     <label>Дата начала</label>
-    <input type="text" class="form-control" name="dateStart" [(ngModel)]="editTask.dateStart">
+    <input type="text" class="form-control" name="dateStart" [(ngModel)]="taskFromObservable.dateStart">
   </div>
   <div class="col-xs-3">
     <label>Дата окончания</label>
-    <input type="text" class="form-control" name="dateEnd" [(ngModel)]="editTask.dateEnd">
+    <input type="text" class="form-control" name="dateEnd" [(ngModel)]="taskFromObservable.dateEnd">
   </div>
   <div class="col-xs-3">
     <label>Статус</label>
     <div>
-      <select class="form-select" aria-label="Default select example" name="select" [(ngModel)]="editTask.status">
+      <select class="form-select" aria-label="Default select example" name="select" [(ngModel)]="taskFromObservable.status">
         <option value="Выполнено">Выполнено</option>
         <option value="Выполняется">Выполняется</option>
         <option value="Просрочено">Просрочено</option>
@@ -30,6 +32,6 @@
   <div>
 
   </div>
-  <button class="btn btn-success" (click)="saveTask(editTask)">Сохранить</button>
+  <button class="btn btn-success" (click)="saveTask(taskFromObservable)">Сохранить</button>
   <button class="btn btn-secondary" (click)="cancelSaveTask()">Отменить</button>
 </form>
