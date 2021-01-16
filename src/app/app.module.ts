@@ -12,6 +12,14 @@ import { EditTaskComponent } from './task-list/edit-task/edit-task.component';
 import { LogDirective } from './shared/directives/log.directive';
 import { ColorDirective } from './shared/directives/color.directive';
 import { MyTitleCasePipe } from './shared/pipes/my-title-case.pipe';
+import { NotesListComponent } from './notes-list/notes-list.component';
+import {RouterModule, Routes} from '@angular/router';
+
+const routes: Routes = [
+  {path: '', redirectTo: 'tasks', pathMatch: 'full'}, // если путь не выбран редирект на маршрут tasks
+  {path: 'tasks', component: TaskListComponent}, // если выбран путь tasks будет отображён TaskListComponent в router-outlet
+  {path: 'notes', component: NotesListComponent} // аналогично пути прописываются для других компонентов
+];
 
 @NgModule({
   declarations: [
@@ -24,11 +32,14 @@ import { MyTitleCasePipe } from './shared/pipes/my-title-case.pipe';
     EditTaskComponent,
     LogDirective,
     ColorDirective,
-    MyTitleCasePipe
+    MyTitleCasePipe,
+    NotesListComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
