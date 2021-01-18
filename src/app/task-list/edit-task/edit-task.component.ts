@@ -1,36 +1,28 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Task} from '../task.model';
-import {TaskService} from '../../shared/services/task.service';
+import {DataHandlerService} from '../../shared/services/data-handler.service';
+import {ActivatedRoute, Params} from '@angular/router';
 
 @Component({
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.css']
 })
-export class EditTaskComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() editTask: Task;
+export class EditTaskComponent implements OnInit, OnDestroy {
   taskFromObservable: Task;
   haveTask = false;
   @Output() editTaskEmitter = new EventEmitter<Task>();
   @Output() cancelEditTaskEmitter = new EventEmitter<boolean>();
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: DataHandlerService) {
+  }
 
   ngOnInit(): void {
     this.taskService.dataUpdate$.subscribe((task: Task) => {
-      this.taskFromObservable = task;
+      this.taskFromObservable = {...task};
       this.haveTask = true;
       console.log(this.taskFromObservable);
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.editTask.status === 'Выполнено') {
-      alert('Нельзя редактировать задачу');
-      setTimeout(() =>  {
-        this.cancelEditTaskEmitter.emit(false);
-        }, 100);
-    }
   }
 
   ngOnDestroy(): void {
@@ -38,8 +30,8 @@ export class EditTaskComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   saveTask(editTask: Task): void {
-    console.log(editTask);
     this.editTaskEmitter.emit(editTask);
+    this.haveTask = false;
   }
 
   cancelSaveTask(): void {

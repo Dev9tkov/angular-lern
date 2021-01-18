@@ -1,28 +1,49 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Task} from './task.model';
-import {TaskService} from '../shared/services/task.service';
+import {DataHandlerService} from '../shared/services/data-handler.service';
+import {TaskStorageService} from '../shared/services/task-storage.service';
+import {typeIsOrHasBaseType} from 'tslint/lib/language/typeUtils';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent implements OnInit, OnChanges {
   selectedIndex: number;
   selectedTask: Task;
   taskFromObservable: Task;
-  tasks: Task[] = [
-    new Task('Футбол с сотрудниками', 'досуг', '20:15 08-10-2019', '20:18 10-10-2019', 'Запланировано'),
-    new Task('Сравнить новый айпад с самсунгом', 'досуг', '20:15 08-10-2019', '20:18 10-10-2019', 'Выполнено'),
-    new Task('Сдать анализы', 'работа', '20:15 08-10-2019', '20:18 10-10-2019', 'Просрочено'),
-    new Task('Попросить аванс на работе', 'досуг', '20:15 08-10-2019', '20:18 10-10-2019', 'Запланировано'),
-    new Task('Положить 100 000 в банк', 'финансы', '20:15 08-10-2019', '20:18 10-10-2019', 'Выполнено'),
-    new Task('Сдать экзамен по Java', 'обучение', '20:15 08-10-2019', '20:18 10-10-2019', 'Просрочено')
-  ];
   checked: boolean;
-  addCommand: boolean;
-  editCommand: boolean;
-  constructor(private taskService: TaskService) {
+  addOrEditCommand: boolean; // true-add false-edit
+  tasks: Task[] = [];
+  dataHandlerService: DataHandlerService;
+  taskStorageService: TaskStorageService;
+  router: ActivatedRoute;
+  route: Router;
+
+  constructor(dataHandlerService: DataHandlerService,
+              taskStorageService: TaskStorageService,
+              router: ActivatedRoute, route: Router) {
+    this.dataHandlerService = dataHandlerService;
+    this.taskStorageService = taskStorageService;
+    this.router = router;
+    this.route = route;
+  }
+
+  ngOnInit(): void {
+    this.addOrEditCommand = true;
+    this.taskStorageService.initTasksArray(this.tasks);
+    this.dataHandlerService.dataUpdate$.subscribe((task: Task) => {
+      this.taskFromObservable = task;
+      this.addOrEditCommand = false;
+    });
+    this.router.params.subscribe((params: Params) => {
+      console.log('params', params);
+    });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+
   }
 
   getTaskListSize(): number {
@@ -31,10 +52,6 @@ export class TaskListComponent implements OnInit {
 
   getTasksAmountByStatus(status: string): number {
     return this.tasks.filter(task => status === task.status).length;
-  }
-
-  deleteTaskFromArray(name: string): void {
-    console.log('Задача' + name + 'удалена');
   }
 
   filterTasks(event: any): void {
@@ -53,28 +70,23 @@ export class TaskListComponent implements OnInit {
 
   editTaskInArray(task: Task): void {
     this.tasks[this.selectedIndex] = task;
-    this.editCommand = false;
-    this.addCommand = true;
+    this.addOrEditCommand = true;
   }
 
-  editTask(task: Task, idx: number): void {
-    this.addCommand = false;
-    this.editCommand = true;
-    this.selectedIndex = idx;
+  editTask(task: Task): void {
+    this.addOrEditCommand = !this.addOrEditCommand;
+    this.selectedIndex = task.id;
     this.selectedTask = {...task}; // клонированный task
-  }
-
-  ngOnInit(): void {
-    this.addCommand = true;
-    this.taskService.dataUpdate$.subscribe((task: Task) => {
-      this.taskFromObservable = task;
-      this.addCommand = false;
-      this.editCommand = true;
-      });
+    this.dataHandlerService.updateDate(task);
   }
 
   cancelEditTaskEmitter(cancel: boolean): void {
-    this.editCommand = cancel; // false при нажатии кнопки отменить в edit-task component
-    this.addCommand = true;
+    this.addOrEditCommand = true;
   }
+
+  viewTask(taskId: number): void {
+    this.route.navigate(['/tasks'], {queryParams: {id: taskId}});
+  }
+
+
 }

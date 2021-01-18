@@ -14,6 +14,7 @@ export class TaskAddComponent implements OnInit {
   dateEnd: string;
   status: string;
   task: Task;
+  @Input() tasksLastIndex: number;
   @Input() showAddTask: boolean;
   @Output() addTaskEmitter = new EventEmitter<Task>();
 
@@ -23,7 +24,7 @@ export class TaskAddComponent implements OnInit {
   }
 
   addTask(): void {
-    this.task = new Task(this.name, this.category, this.dateStart, this.dateEnd, this.status);
+    this.task = new Task(this.tasksLastIndex, this.name, this.category, this.dateStart, this.dateEnd, this.status);
     this.addTaskEmitter.emit(this.task);
     this.name = '';
     this.category = '';

@@ -5,12 +5,13 @@ import {Task} from '../../task-list/task.model';
 @Injectable({
   providedIn: 'root'
 })
-export class TaskService {
+export class DataHandlerService {
   private dataSource = new Subject<Task>();
   dataUpdate$ = this.dataSource.asObservable();
+
+  constructor() { }
+
   updateDate(data: Task): void {
     this.dataSource.next(data);
   }
-
-  constructor() { }
 }

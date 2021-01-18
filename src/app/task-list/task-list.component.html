@@ -1,6 +1,6 @@
 <app-statistic
   [taskAll]="getTaskListSize()"
-  [tasksFinished]="getTasksAmountByStatus('Выполнено')"
+  [tasksFinished]="getTasksAmountByStatus('Заврешено')"
   [tasksOverdue]="getTasksAmountByStatus('Просрочено')"
   [tasksPlanned]="getTasksAmountByStatus('Запланировано')"
 >
@@ -12,11 +12,11 @@
 </div>
 
 <app-task-add
-  *ngIf="addCommand"
+  *ngIf="addOrEditCommand"
+  [tasksLastIndex]="tasks.length"
   (addTaskEmitter)="addTaskToArray($event)"
 >
 </app-task-add>
-
 <app-edit-task
   (editTaskEmitter)="editTaskInArray($event)"
   (cancelEditTaskEmitter)="cancelEditTaskEmitter($event)"
@@ -32,36 +32,28 @@
     <th scope="col">Дата начала</th>
     <th scope="col">Дата окончания</th>
     <th scope="col">Статус</th>
-    <th scope="col">Редактирование/Удаление задачи</th>
+    <th scope="col">Редактирование/Удаление</th>
   </tr>
   </thead>
   <tbody>
-<tr *ngFor="let task of tasks; let i = index"
+<tr *ngFor="let task of tasks;"
 >
-  <th *ngIf="checked || (!checked && task.status != 'Выполнено')">{{i + 1}}</th>
-  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.name | myTitleCase}}</td>
-  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.category}}</td>
-  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.dateStart}}</td>
-  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">{{task.dateEnd}}</td>
+  <th *ngIf="checked || (!checked && task.status != 'Заврешено')">{{task.id}}</th>
+  <td *ngIf="checked || (!checked && task.status != 'Заврешено')">{{task.name | myTitleCase}}</td>
+  <td *ngIf="checked || (!checked && task.status != 'Заврешено')">{{task.category}}</td>
+  <td *ngIf="checked || (!checked && task.status != 'Заврешено')">{{task.dateStart}}</td>
+  <td *ngIf="checked || (!checked && task.status != 'Заврешено')">{{task.dateEnd}}</td>
   <td
     [ngStyle]="{'color': task.status == 'Просрочено' ? 'red' : 'black'}"
-    *ngIf="checked || (!checked && task.status != 'Выполнено')"
+    *ngIf="checked || (!checked && task.status != 'Заврешено')"
   >
     {{task.status}}</td>
-  <td *ngIf="checked || (!checked && task.status != 'Выполнено')">
-    <button class="btn btn-success" (click)="editTask(task, i)">Редактировать задачу</button>
-    <button class="btn btn-danger" (click)="deleteTask(i)">Удалить задачу</button>
+  <td *ngIf="checked || (!checked && task.status != 'Заврешено')">
+    <button class="btn btn-success" (click)="editTask(task)">Редактировать</button>
+    <button class="btn btn-danger" (click)="deleteTask(task.id)">Удалить</button>
+    <button class="btn btn-secondary" [routerLink]="['/tasks', task.id]">Просмотр</button>
   </td>
 </tr>
-  <tr app-list-row
-      [name]="'Название 10'"
-      [category]="'Категория 10'"
-      [dateStart]="'2020-10-18'"
-      [dateEnd]="'20:15 08-10-2019'"
-      [status]="'Выполнено'"
-      (deleteTaskEmitter)="deleteTaskFromArray($event)"
-  >
-  </tr>
   </tbody>
 </table>
 
